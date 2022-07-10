@@ -61,17 +61,14 @@ class MyHomePage extends StatelessWidget {
             const Text(
               'You have pushed the button this many times:',
             ),
-            Container( color: Colors.red, padding: const EdgeInsets.all(10) ,
+            RedBox(
               child: Consumer<CounterChangeNotifier>(
                 // 여기서 보면 알다시피 Provider.of<>(context) 위에서 사용하는 것 보다 여기서 사용하는게 훨씬 경제적이다.
                 builder: (context, value, child) {
-                  return Text(
-                    value.counter.toString(), // TODO
-                    style: Theme.of(context).textTheme.headline4,
-                  );
+                  return CounterNumber(number : value.counter);
                 },
-                ),
               ),
+            ),
           ],
         ),
       ),
@@ -83,6 +80,37 @@ class MyHomePage extends StatelessWidget {
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+}
+
+class CounterNumber extends StatelessWidget {
+  final int? number;
+  const CounterNumber({Key? key, required this.number}) : super(key : key);
+
+  @override
+  Widget build(BuildContext context) {
+    print('CounterNumber building');
+    return Text(
+      number.toString(),
+      style: Theme.of(context).textTheme.headline4,
+    );
+  }
+}
+
+class RedBox extends StatelessWidget {
+  final Widget? child;
+  final bool? isRed;
+  const RedBox ({Key? key, this.child, this.isRed}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    print('RedBox building');
+    return Container( // 조건문
+      color: isRed ?? true ? Colors.redAccent : Colors.blue,
+      width: 50,
+      height: 50,
+      child: Center(child: child,),
+    ); // 잘봐라. return 문에는 항상 세미콜론을 넣어야 한다.
   }
 }
 
